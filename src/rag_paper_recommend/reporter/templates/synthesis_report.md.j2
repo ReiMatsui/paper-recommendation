@@ -1,0 +1,11 @@
+# {{ synthesis.period_type | capitalize }} 研究トレンドレポート
+
+- **トピック**: `{{ synthesis.topic }}`
+- **対象期間**: {{ synthesis.period_start.strftime("%Y-%m-%d") }} 〜 {{ synthesis.period_end.strftime("%Y-%m-%d") }}
+- **対象論文数**: {{ synthesis.paper_count }} 件
+- **生成日時**: {{ synthesis.generated_at.strftime("%Y-%m-%d %H:%M") }} (UTC)
+- **LLM**: {{ synthesis.llm_provider }}
+
+---
+
+{{ synthesis.synthesis_text }}

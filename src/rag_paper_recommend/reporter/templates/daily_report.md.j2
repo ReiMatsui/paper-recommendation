@@ -1,0 +1,33 @@
+# 論文収集レポート {{ date.strftime("%Y年%m月%d日") }}
+
+収集論文数: **{{ papers | length }}** 件
+
+---
+{% for paper in papers %}
+## {{ paper.title }}
+
+- **著者**: {{ paper.authors[:3] | join(", ") }}{% if paper.authors | length > 3 %} 他 {{ paper.authors | length - 3 }} 名{% endif %}
+- **公開日**: {{ paper.published_at.strftime("%Y-%m-%d") }}
+- **トピック**: `{{ paper.topic }}`
+- **PDF**: [arXiv:{{ paper.arxiv_id }}]({{ paper.pdf_url }})
+{% if paper.problem %}
+### 解決しようとしている問題
+{{ paper.problem }}
+
+### 提案手法
+{{ paper.method }}
+
+### 主な主張・成果
+{{ paper.claims }}
+
+### 限界・制約
+{{ paper.limitations }}
+
+### 今後の課題
+{{ paper.open_questions }}
+{% else %}
+> ⚠️ 構造化抽出未完了
+
+{% endif %}
+---
+{% endfor %}
