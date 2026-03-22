@@ -42,6 +42,15 @@ class EmailNotifier:
         body = report_path.read_text(encoding="utf-8") if report_path.exists() else "レポートの生成に失敗しました。"
         self._send(subject, body)
 
+    def send_bootstrap_report(self, topic: str, days: int, report_path: Path, paper_count: int) -> None:
+        """ブートストラップ概観レポートをメールで送信する。"""
+        if not self._enabled:
+            logger.debug("Email notification is disabled. Skipping.")
+            return
+        subject = f"[論文レポート] フィールド概観: {topic}（過去{days}日・{paper_count}件）"
+        body = report_path.read_text(encoding="utf-8") if report_path.exists() else "レポートの生成に失敗しました。"
+        self._send(subject, body)
+
     def send_synthesis_report(self, period_type: str, date: datetime, report_path: Path, paper_count: int) -> None:
         """週次・月次合成レポートをメールで送信する。"""
         if not self._enabled:

@@ -1,6 +1,8 @@
 """RAG Paper Recommend - CLI エントリーポイント。
 
 使い方:
+    uv run python main.py bootstrap         # 初回セットアップ（過去180日分を収集・分析）
+    uv run python main.py bootstrap --days 90  # 期間を指定
     uv run python main.py run               # 今すぐ 1 回実行
     uv run python main.py run --weekly      # 実行後に週次合成も実行
     uv run python main.py schedule          # スケジューラ常駐起動
@@ -18,6 +20,19 @@ app = typer.Typer(
     help="研究論文の自動収集・トレンド分析システム",
     add_completion=False,
 )
+
+
+@app.command()
+def bootstrap(
+    days: int = typer.Option(180, "--days", help="何日前まで遡って収集するか"),
+) -> None:
+    """初回セットアップ: 過去 N 日分の論文を一括収集してフィールド概観レポートを生成する。"""
+    from rag_paper_recommend.config.settings import settings
+    from rag_paper_recommend.container import build_bootstrap_pipeline
+
+    typer.echo(f"Starting bootstrap: collecting papers from the past {days} days...")
+    typer.echo("This may take a while (30-60 minutes for 180 days). Please wait.")
+    build_bootstrap_pipeline(settings).run(days=days)
 
 
 @app.command()

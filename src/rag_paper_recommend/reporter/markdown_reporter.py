@@ -38,6 +38,27 @@ class MarkdownReporter:
         content = template.render(date=date, papers=papers, trend_analysis=trend_analysis)
         return self._save(date.strftime("%Y-%m-%d"), "daily_report.md", content)
 
+    def write_bootstrap(
+        self,
+        topic: str,
+        days: int,
+        date: datetime,
+        paper_count: int,
+        content: str,
+    ) -> Path:
+        """ブートストラップ概観レポートを保存する。"""
+        header = (
+            f"# フィールド概観レポート: {topic}\n\n"
+            f"- **分析期間**: 過去 {days} 日間\n"
+            f"- **論文数**: {paper_count} 件\n"
+            f"- **生成日**: {date.strftime('%Y-%m-%d')}\n\n---\n\n"
+        )
+        full_content = header + content
+        subdir = f"bootstrap_{date.strftime('%Y-%m-%d')}"
+        safe_topic = topic.replace(" ", "_").replace("/", "-")[:50]
+        filename = f"bootstrap_{safe_topic}.md"
+        return self._save(subdir, filename, full_content)
+
     def write_synthesis(self, synthesis: Synthesis) -> Path:
         """週次・月次合成レポートを保存する。
 

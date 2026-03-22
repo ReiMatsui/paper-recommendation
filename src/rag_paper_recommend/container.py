@@ -8,6 +8,7 @@ from .collector.arxiv_collector import ArxivCollector
 from .config.settings import Settings
 from .llm.factory import create_llm_client
 from .notifier.email_notifier import EmailNotifier
+from .pipeline.bootstrap_pipeline import BootstrapPipeline
 from .pipeline.daily_pipeline import DailyPipeline
 from .pipeline.synthesis_pipeline import SynthesisPipeline
 from .reporter.markdown_reporter import MarkdownReporter
@@ -47,6 +48,18 @@ def build_synthesis_pipeline(settings: Settings) -> SynthesisPipeline:
         settings=settings,
         llm_client=create_llm_client(settings),
         sqlite_store=SQLiteStore(settings.get_db_path()),
+        reporter=MarkdownReporter(settings.get_output_dir()),
+        notifier=build_email_notifier(settings),
+    )
+
+
+def build_bootstrap_pipeline(settings: Settings) -> BootstrapPipeline:
+    """BootstrapPipeline に必要な全依存物を生成して注入する。"""
+    return BootstrapPipeline(
+        settings=settings,
+        llm_client=create_llm_client(settings),
+        sqlite_store=SQLiteStore(settings.get_db_path()),
+        vector_store=VectorStore(settings.get_vector_db_path()),
         reporter=MarkdownReporter(settings.get_output_dir()),
         notifier=build_email_notifier(settings),
     )
