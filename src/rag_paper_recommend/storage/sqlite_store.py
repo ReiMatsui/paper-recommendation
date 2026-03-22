@@ -90,6 +90,24 @@ class SQLiteStore:
                 _ = p.authors
             return papers
 
+    def get_past_extracted_papers(self, before: datetime, days: int) -> list[Paper]:
+        """指定日より前の N 日間に収集された抽出済み論文を返す（トレンド比較用）。"""
+        from datetime import timedelta
+        end = before.replace(hour=0, minute=0, second=0, microsecond=0)
+        start = end - timedelta(days=days)
+        with self._Session() as session:
+            papers = list(
+                session.scalars(
+                    select(Paper)
+                    .where(Paper.collected_at.between(start, end))
+                    .where(Paper.extracted_at.is_not(None))
+                    .order_by(Paper.published_at.desc())
+                ).all()
+            )
+            for p in papers:
+                _ = p.authors
+            return papers
+
     # ------------------------------------------------------------------ #
     # Synthesis                                                            #
     # ------------------------------------------------------------------ #

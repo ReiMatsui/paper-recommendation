@@ -27,10 +27,15 @@ class MarkdownReporter:
             lstrip_blocks=True,
         )
 
-    def write_daily(self, date: datetime, papers: list[Paper]) -> Path:
+    def write_daily(
+        self,
+        date: datetime,
+        papers: list[Paper],
+        trend_analysis: str | None = None,
+    ) -> Path:
         """日次収集レポートを生成して保存する。"""
         template = self._env.get_template("daily_report.md.j2")
-        content = template.render(date=date, papers=papers)
+        content = template.render(date=date, papers=papers, trend_analysis=trend_analysis)
         return self._save(date.strftime("%Y-%m-%d"), "daily_report.md", content)
 
     def write_synthesis(self, synthesis: Synthesis) -> Path:

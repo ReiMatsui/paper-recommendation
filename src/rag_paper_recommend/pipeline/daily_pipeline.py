@@ -9,6 +9,7 @@ from ..config.settings import Settings
 from ..llm.base import BaseLLMClient
 from ..notifier.email_notifier import EmailNotifier
 from ..processor.extractor import PaperExtractor
+from ..processor.trend_analyzer import TrendAnalyzer
 from ..reporter.markdown_reporter import MarkdownReporter
 from ..storage.models import Paper
 from ..storage.sqlite_store import SQLiteStore
@@ -35,6 +36,7 @@ class DailyPipeline:
         self._settings = settings
         self._collector = collector
         self._extractor = PaperExtractor(llm_client)
+        self._trend_analyzer = TrendAnalyzer(llm_client)
         self._llm_provider = llm_client.provider_name
         self._sqlite = sqlite_store
         self._vector = vector_store
@@ -106,11 +108,16 @@ class DailyPipeline:
                 logger.error(f"  [FAIL] {raw.arxiv_id} | {e}")
                 continue
 
-        # 4. 日次レポート生成
-        report_path = self._reporter.write_daily(now, processed)
+        # 4. 日次トレンド分析（今日 vs 過去 7 日）
+        past_papers = self._sqlite.get_past_extracted_papers(before=now, days=7)
+        logger.info(f"Past papers for trend analysis: {len(past_papers)}")
+        trend_analysis = self._trend_analyzer.analyze(processed, past_papers, now)
+
+        # 5. 日次レポート生成
+        report_path = self._reporter.write_daily(now, processed, trend_analysis)
         logger.info(f"Daily report written | path={report_path}")
 
-        # 5. メール通知
+        # 6. メール通知
         self._notifier.send_daily_report(now, report_path, len(processed))
 
         logger.info(
