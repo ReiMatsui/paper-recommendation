@@ -6,6 +6,7 @@ from loguru import logger
 
 from ..config.settings import Settings
 from ..llm.base import BaseLLMClient
+from ..notifier.email_notifier import EmailNotifier
 from ..processor.synthesizer import ResearchSynthesizer
 from ..reporter.markdown_reporter import MarkdownReporter
 from ..storage.models import Synthesis
@@ -21,12 +22,14 @@ class SynthesisPipeline:
         llm_client: BaseLLMClient,
         sqlite_store: SQLiteStore,
         reporter: MarkdownReporter,
+        notifier: EmailNotifier,
     ) -> None:
         self._settings = settings
         self._synthesizer = ResearchSynthesizer(llm_client)
         self._llm_provider = llm_client.provider_name
         self._sqlite = sqlite_store
         self._reporter = reporter
+        self._notifier = notifier
 
     def run_weekly(self) -> None:
         """直近 7 日間の週次合成レポートを生成する。"""
@@ -71,5 +74,8 @@ class SynthesisPipeline:
             self._sqlite.save_synthesis(synthesis)
             path = self._reporter.write_synthesis(synthesis)
             logger.info(f"  Report written | path={path}")
+
+            # メール通知
+            self._notifier.send_synthesis_report(period_type, end, path, len(topic_papers))
 
         logger.info(f"=== {period_type.capitalize()} synthesis finished ===")

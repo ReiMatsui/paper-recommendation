@@ -7,6 +7,7 @@ from loguru import logger
 from ..collector.base import BaseCollector
 from ..config.settings import Settings
 from ..llm.base import BaseLLMClient
+from ..notifier.email_notifier import EmailNotifier
 from ..processor.extractor import PaperExtractor
 from ..reporter.markdown_reporter import MarkdownReporter
 from ..storage.models import Paper
@@ -29,6 +30,7 @@ class DailyPipeline:
         sqlite_store: SQLiteStore,
         vector_store: VectorStore,
         reporter: MarkdownReporter,
+        notifier: EmailNotifier,
     ) -> None:
         self._settings = settings
         self._collector = collector
@@ -37,6 +39,7 @@ class DailyPipeline:
         self._sqlite = sqlite_store
         self._vector = vector_store
         self._reporter = reporter
+        self._notifier = notifier
 
     def run(self) -> None:
         now = datetime.now(timezone.utc)
@@ -106,6 +109,10 @@ class DailyPipeline:
         # 4. 日次レポート生成
         report_path = self._reporter.write_daily(now, processed)
         logger.info(f"Daily report written | path={report_path}")
+
+        # 5. メール通知
+        self._notifier.send_daily_report(now, report_path, len(processed))
+
         logger.info(
             f"=== Daily pipeline finished | processed={len(processed)}/{len(new_papers)} ==="
         )

@@ -50,6 +50,14 @@ class Settings(BaseSettings):
     daily_schedule_time: str = "09:00"   # HH:MM (JST)
     weekly_schedule_day: str = "mon"     # mon / tue / wed / thu / fri / sat / sun
 
+    # --- メール通知 ---
+    email_enabled: bool = False
+    email_smtp_host: str = "smtp.gmail.com"
+    email_smtp_port: int = 587
+    email_from: str = ""
+    email_password: str = ""
+    email_to: str = ""
+
     # --- パス ---
     db_path: str = "data/db/papers.db"
     vector_db_path: str = "data/vector/chroma"

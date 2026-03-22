@@ -7,12 +7,25 @@ main.py はこのモジュールを経由してパイプラインを取得する
 from .collector.arxiv_collector import ArxivCollector
 from .config.settings import Settings
 from .llm.factory import create_llm_client
+from .notifier.email_notifier import EmailNotifier
 from .pipeline.daily_pipeline import DailyPipeline
 from .pipeline.synthesis_pipeline import SynthesisPipeline
 from .reporter.markdown_reporter import MarkdownReporter
 from .scheduler.job_scheduler import JobScheduler
 from .storage.sqlite_store import SQLiteStore
 from .storage.vector_store import VectorStore
+
+
+def build_email_notifier(settings: Settings) -> EmailNotifier:
+    """EmailNotifier を生成する。"""
+    return EmailNotifier(
+        enabled=settings.email_enabled,
+        smtp_host=settings.email_smtp_host,
+        smtp_port=settings.email_smtp_port,
+        email_from=settings.email_from,
+        email_password=settings.email_password,
+        email_to=settings.email_to,
+    )
 
 
 def build_daily_pipeline(settings: Settings) -> DailyPipeline:
@@ -24,6 +37,7 @@ def build_daily_pipeline(settings: Settings) -> DailyPipeline:
         sqlite_store=SQLiteStore(settings.get_db_path()),
         vector_store=VectorStore(settings.get_vector_db_path()),
         reporter=MarkdownReporter(settings.get_output_dir()),
+        notifier=build_email_notifier(settings),
     )
 
 
@@ -34,6 +48,7 @@ def build_synthesis_pipeline(settings: Settings) -> SynthesisPipeline:
         llm_client=create_llm_client(settings),
         sqlite_store=SQLiteStore(settings.get_db_path()),
         reporter=MarkdownReporter(settings.get_output_dir()),
+        notifier=build_email_notifier(settings),
     )
 
 
