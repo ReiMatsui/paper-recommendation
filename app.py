@@ -40,7 +40,12 @@ def main() -> None:
     all_papers = store.get_papers_in_range(
         datetime(2000, 1, 1, tzinfo=timezone.utc), now
     )
-    recent_papers = [p for p in all_papers if p.collected_at >= week_ago]
+    # collected_at は timezone-naive のため naive に変換して比較
+    week_ago_naive = week_ago.replace(tzinfo=None)
+    recent_papers = [
+        p for p in all_papers
+        if (p.collected_at.replace(tzinfo=None) if p.collected_at.tzinfo else p.collected_at) >= week_ago_naive
+    ]
     extracted = [p for p in all_papers if p.extracted_at is not None]
 
     col1, col2, col3, col4 = st.columns(4)

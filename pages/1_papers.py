@@ -85,16 +85,27 @@ def main() -> None:
         sort_by = st.selectbox("並び順", ["公開日（新しい順）", "公開日（古い順）", "収集日（新しい順）"])
 
     # --- フィルタリング ---
+    # SQLite から取得した collected_at は timezone-naive のため、比較もnaiveで統一する
     if isinstance(date_range, (list, tuple)) and len(date_range) == 2:
-        start_dt = datetime.combine(date_range[0], datetime.min.time()).replace(tzinfo=timezone.utc)
-        end_dt = datetime.combine(date_range[1], datetime.max.time()).replace(tzinfo=timezone.utc)
+        start_dt = datetime.combine(date_range[0], datetime.min.time())
+        end_dt = datetime.combine(date_range[1], datetime.max.time())
+        start_dt_utc = start_dt.replace(tzinfo=timezone.utc)
+        end_dt_utc = end_dt.replace(tzinfo=timezone.utc)
     else:
-        start_dt = datetime(2000, 1, 1, tzinfo=timezone.utc)
-        end_dt = now
+        start_dt = datetime(2000, 1, 1)
+        end_dt = datetime.now()
+        start_dt_utc = start_dt.replace(tzinfo=timezone.utc)
+        end_dt_utc = end_dt.replace(tzinfo=timezone.utc)
 
-    papers = store.get_papers_in_range(start_dt, end_dt) if extracted_only else [
+    def _to_naive(dt) -> datetime:
+        """timezone-aware/naive どちらでも比較できるよう naive に統一する。"""
+        if dt is None:
+            return datetime(2000, 1, 1)
+        return dt.replace(tzinfo=None) if dt.tzinfo else dt
+
+    papers = store.get_papers_in_range(start_dt_utc, end_dt_utc) if extracted_only else [
         p for p in all_papers_raw
-        if p.collected_at >= start_dt and p.collected_at <= end_dt
+        if start_dt <= _to_naive(p.collected_at) <= end_dt
     ]
 
     if selected_topics:

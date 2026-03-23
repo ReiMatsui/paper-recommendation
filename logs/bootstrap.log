@@ -16,3 +16,22 @@ This may take a while (30-60 minutes for 180 days). Please wait.
 2026-03-23 16:17:07.192 | WARNING  | rag_paper_recommend.processor.extractor:extract:52 - JSON parse failed | arxiv_id=2603.02153v1 error=Unterminated string starting at: line 2 column 14 (char 15)
 2026-03-23 16:17:28.505 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.02047v1 error=RetryError[<Future at 0x1103de9d0 state=finished raised ClientError>]
 2026-03-23 16:17:49.714 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01990v1 error=RetryError[<Future at 0x1104017d0 state=finished raised ClientError>]
+2026-03-23 16:18:10.892 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01966v1 error=RetryError[<Future at 0x11041c5d0 state=finished raised ClientError>]
+2026-03-23 16:18:32.194 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01910v1 error=RetryError[<Future at 0x110400ad0 state=finished raised ClientError>]
+2026-03-23 16:18:53.386 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01783v1 error=RetryError[<Future at 0x1103de0d0 state=finished raised ClientError>]
+2026-03-23 16:19:15.000 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01773v1 error=RetryError[<Future at 0x11031ec50 state=finished raised ClientError>]
+2026-03-23 16:19:36.116 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.13301v1 error=RetryError[<Future at 0x11041c6d0 state=finished raised ClientError>]
+2026-03-23 16:19:57.323 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01710v1 error=RetryError[<Future at 0x11031e6d0 state=finished raised ClientError>]
+2026-03-23 16:20:18.485 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01661v1 error=RetryError[<Future at 0x1103ddcd0 state=finished raised ClientError>]
+2026-03-23 16:20:18.589 | INFO     | rag_paper_recommend.pipeline.bootstrap_pipeline:run:110 -   Progress: 30/888
+2026-03-23 16:20:39.664 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01554v1 error=RetryError[<Future at 0x1102db550 state=finished raised ClientError>]
+2026-03-23 16:21:00.759 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01509v1 error=RetryError[<Future at 0x110400a50 state=finished raised ClientError>]
+2026-03-23 16:21:21.846 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01417v1 error=RetryError[<Future at 0x11041d150 state=finished raised ClientError>]
+2026-03-23 16:21:43.065 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.19281v1 error=RetryError[<Future at 0x1104028d0 state=finished raised ClientError>]
+2026-03-23 16:22:04.199 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01289v1 error=RetryError[<Future at 0x1103dcdd0 state=finished raised ClientError>]
+2026-03-23 16:22:25.467 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01241v1 error=RetryError[<Future at 0x1102d9a50 state=finished raised ClientError>]
+2026-03-23 16:22:46.541 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01175v1 error=RetryError[<Future at 0x11031eed0 state=finished raised ClientError>]
+2026-03-23 16:23:07.537 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01160v1 error=RetryError[<Future at 0x11031fcd0 state=finished raised ClientError>]
+2026-03-23 16:23:28.615 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01153v1 error=RetryError[<Future at 0x1102d9f50 state=finished raised ClientError>]
+2026-03-23 16:23:49.715 | WARNING  | rag_paper_recommend.processor.extractor:extract:57 - Extraction failed | arxiv_id=2603.01097v1 error=RetryError[<Future at 0x1103de1d0 state=finished raised ClientError>]
+2026-03-23 16:23:49.827 | INFO     | rag_paper_recommend.pipeline.bootstrap_pipeline:run:110 -   Progress: 40/888

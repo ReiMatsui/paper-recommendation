@@ -29,8 +29,8 @@ class GeminiClient(BaseLLMClient):
         return self._model_name
 
     @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=10, max=60),
+        stop=stop_after_attempt(6),
+        wait=wait_exponential(multiplier=2, min=15, max=120),
     )
     def generate(self, prompt: str, system_prompt: str | None = None) -> LLMResponse:
         config = types.GenerateContentConfig(
