@@ -1,9 +1,10 @@
 """RAG Paper Recommend - CLI エントリーポイント。
 
 使い方:
-    uv run python main.py bootstrap         # 初回セットアップ（過去180日分を収集・分析）
+    uv run python main.py bootstrap             # 初回セットアップ（過去180日分を収集・分析）
     uv run python main.py bootstrap --days 90  # 期間を指定
-    uv run python main.py run               # 今すぐ 1 回実行
+    uv run python main.py extract-missing       # 未抽出論文を100件ずつ処理
+    uv run python main.py run                   # 今すぐ 1 回実行
     uv run python main.py run --weekly      # 実行後に週次合成も実行
     uv run python main.py schedule          # スケジューラ常駐起動
     uv run python main.py search "クエリ"   # 類似論文検索
@@ -33,6 +34,58 @@ def bootstrap(
     typer.echo(f"Starting bootstrap: collecting papers from the past {days} days...")
     typer.echo("This may take a while (30-60 minutes for 180 days). Please wait.")
     build_bootstrap_pipeline(settings).run(days=days)
+
+
+@app.command()
+def extract_missing(
+    limit: int = typer.Option(100, "--limit", help="1回の実行で処理する最大件数"),
+) -> None:
+    """保存済みだが未抽出の論文に LLM 抽出を実行する。毎日少しずつ処理するのに便利。"""
+    from rag_paper_recommend.config.settings import settings
+    from rag_paper_recommend.collector.base import PaperRaw
+    from rag_paper_recommend.llm.factory import create_llm_client
+    from rag_paper_recommend.processor.extractor import PaperExtractor
+    from rag_paper_recommend.storage.sqlite_store import SQLiteStore
+    from rag_paper_recommend.storage.vector_store import VectorStore
+
+    store = SQLiteStore(settings.get_db_path())
+    vector = VectorStore(settings.get_vector_db_path())
+    extractor = PaperExtractor(create_llm_client(settings))
+    llm_provider = create_llm_client(settings).provider_name
+
+    papers = store.get_unextracted_papers(limit=limit)
+    typer.echo(f"未抽出論文: {len(papers)} 件を処理します（上限: {limit}件）")
+
+    success = 0
+    for i, paper in enumerate(papers, 1):
+        raw = PaperRaw(
+            arxiv_id=paper.arxiv_id,
+            title=paper.title,
+            abstract=paper.abstract,
+            authors=paper.authors,
+            published_at=paper.published_at,
+            pdf_url=paper.pdf_url,
+            topic=paper.topic,
+        )
+        extraction = extractor.extract(raw)
+        if extraction:
+            store.update_extraction(paper.arxiv_id, extraction, llm_provider)
+            vector.upsert(
+                arxiv_id=paper.arxiv_id,
+                text=f"{paper.title}\n{paper.abstract}",
+                metadata={"title": paper.title, "topic": paper.topic,
+                          "published_at": paper.published_at.isoformat()},
+            )
+            success += 1
+        if i % 10 == 0:
+            typer.echo(f"  進捗: {i}/{len(papers)} 件完了")
+
+    typer.echo(f"完了: {success}/{len(papers)} 件抽出成功")
+    remaining = store.get_unextracted_papers(limit=1)
+    if remaining:
+        typer.echo("まだ未抽出の論文があります。再度 extract-missing を実行してください。")
+    else:
+        typer.echo("全件抽出完了です！")
 
 
 @app.command()

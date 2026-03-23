@@ -90,6 +90,21 @@ class SQLiteStore:
                 _ = p.authors
             return papers
 
+    def get_unextracted_papers(self, limit: int = 100) -> list[Paper]:
+        """未抽出の論文を公開日の新しい順に最大 limit 件返す。"""
+        with self._Session() as session:
+            papers = list(
+                session.scalars(
+                    select(Paper)
+                    .where(Paper.extracted_at.is_(None))
+                    .order_by(Paper.published_at.desc())
+                    .limit(limit)
+                ).all()
+            )
+            for p in papers:
+                _ = p.authors
+            return papers
+
     def get_past_extracted_papers(self, before: datetime, days: int) -> list[Paper]:
         """指定日より前の N 日間に収集された抽出済み論文を返す（トレンド比較用）。"""
         from datetime import timedelta
