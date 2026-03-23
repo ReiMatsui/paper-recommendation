@@ -1,0 +1,217 @@
+Starting bootstrap: collecting papers from the past 180 days...
+This may take a while (30-60 minutes for 180 days). Please wait.
+2026-03-23 16:02:31.782 | DEBUG    | rag_paper_recommend.storage.sqlite_store:__init__:22 - SQLiteStore initialized | db=data/db/papers.db
+2026-03-23 16:02:31.910 | DEBUG    | rag_paper_recommend.storage.vector_store:__init__:27 - VectorStore initialized | path=data/vector/chroma count=128
+2026-03-23 16:02:31.910 | INFO     | rag_paper_recommend.pipeline.bootstrap_pipeline:run:51 - === Bootstrap pipeline started | days=180 ===
+2026-03-23 16:02:31.910 | INFO     | rag_paper_recommend.collector.arxiv_collector:fetch:37 - Fetching arXiv papers | topic='RAG' since=2025-09-24
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:695 in _parse_feed                                             │
+│                                                                              │
+│   692 │   │   `self.num_retries` times.                                      │
+│   693 │   │   """                                                            │
+│   694 │   │   try:                                                           │
+│ ❱ 695 │   │   │   return self.__try_parse_feed(url, first_page=first_page, t │
+│   696 │   │   except (                                                       │
+│   697 │   │   │   HTTPError,                                                 │
+│   698 │   │   │   UnexpectedEmptyPageError,                                  │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:732 in __try_parse_feed                                        │
+│                                                                              │
+│   729 │   │   resp = self._session.get(url, headers={"user-agent": "arxiv.py │
+│   730 │   │   self._last_request_dt = datetime.now()                         │
+│   731 │   │   if resp.status_code != requests.codes.OK:                      │
+│ ❱ 732 │   │   │   raise HTTPError(url, try_index, resp.status_code)          │
+│   733 │   │                                                                  │
+│   734 │   │   feed = feedparser.parse(resp.content)                          │
+│   735 │   │   if len(feed.entries) == 0 and not first_page:                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+HTTPError: Page request resulted in HTTP 503 
+(https://export.arxiv.org/api/query?search_query=RAG&id_list=&sortBy=submittedDa
+te&sortOrder=descending&start=100&max_results=100)
+
+During handling of the above exception, another exception occurred:
+
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:695 in _parse_feed                                             │
+│                                                                              │
+│   692 │   │   `self.num_retries` times.                                      │
+│   693 │   │   """                                                            │
+│   694 │   │   try:                                                           │
+│ ❱ 695 │   │   │   return self.__try_parse_feed(url, first_page=first_page, t │
+│   696 │   │   except (                                                       │
+│   697 │   │   │   HTTPError,                                                 │
+│   698 │   │   │   UnexpectedEmptyPageError,                                  │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:732 in __try_parse_feed                                        │
+│                                                                              │
+│   729 │   │   resp = self._session.get(url, headers={"user-agent": "arxiv.py │
+│   730 │   │   self._last_request_dt = datetime.now()                         │
+│   731 │   │   if resp.status_code != requests.codes.OK:                      │
+│ ❱ 732 │   │   │   raise HTTPError(url, try_index, resp.status_code)          │
+│   733 │   │                                                                  │
+│   734 │   │   feed = feedparser.parse(resp.content)                          │
+│   735 │   │   if len(feed.entries) == 0 and not first_page:                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+HTTPError: Page request resulted in HTTP 503 
+(https://export.arxiv.org/api/query?search_query=RAG&id_list=&sortBy=submittedDa
+te&sortOrder=descending&start=100&max_results=100)
+
+During handling of the above exception, another exception occurred:
+
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:695 in _parse_feed                                             │
+│                                                                              │
+│   692 │   │   `self.num_retries` times.                                      │
+│   693 │   │   """                                                            │
+│   694 │   │   try:                                                           │
+│ ❱ 695 │   │   │   return self.__try_parse_feed(url, first_page=first_page, t │
+│   696 │   │   except (                                                       │
+│   697 │   │   │   HTTPError,                                                 │
+│   698 │   │   │   UnexpectedEmptyPageError,                                  │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:732 in __try_parse_feed                                        │
+│                                                                              │
+│   729 │   │   resp = self._session.get(url, headers={"user-agent": "arxiv.py │
+│   730 │   │   self._last_request_dt = datetime.now()                         │
+│   731 │   │   if resp.status_code != requests.codes.OK:                      │
+│ ❱ 732 │   │   │   raise HTTPError(url, try_index, resp.status_code)          │
+│   733 │   │                                                                  │
+│   734 │   │   feed = feedparser.parse(resp.content)                          │
+│   735 │   │   if len(feed.entries) == 0 and not first_page:                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+HTTPError: Page request resulted in HTTP 429 
+(https://export.arxiv.org/api/query?search_query=RAG&id_list=&sortBy=submittedDa
+te&sortOrder=descending&start=100&max_results=100)
+
+During handling of the above exception, another exception occurred:
+
+╭───────────────────── Traceback (most recent call last) ──────────────────────╮
+│ /Users/matsuirei/rag-paper-recommend/main.py:35 in bootstrap                 │
+│                                                                              │
+│    32 │                                                                      │
+│    33 │   typer.echo(f"Starting bootstrap: collecting papers from the past { │
+│    34 │   typer.echo("This may take a while (30-60 minutes for 180 days). Pl │
+│ ❱  35 │   build_bootstrap_pipeline(settings).run(days=days)                  │
+│    36                                                                        │
+│    37                                                                        │
+│    38 @app.command()                                                         │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/src/rag_paper_recommend/pipeline/bootst │
+│ rap_pipeline.py:57 in run                                                    │
+│                                                                              │
+│    54 │   │   original_max = self._collector._max_results                    │
+│    55 │   │   self._collector._max_results = BOOTSTRAP_MAX_RESULTS           │
+│    56 │   │   try:                                                           │
+│ ❱  57 │   │   │   raw_papers = self._collector.fetch(                        │
+│    58 │   │   │   │   topics=self._settings.get_topics(),                    │
+│    59 │   │   │   │   days_back=days,                                        │
+│    60 │   │   │   )                                                          │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/src/rag_paper_recommend/collector/arxiv │
+│ _collector.py:38 in fetch                                                    │
+│                                                                              │
+│   35 │   │                                                                   │
+│   36 │   │   for topic in topics:                                            │
+│   37 │   │   │   logger.info(f"Fetching arXiv papers | topic={topic!r} since │
+│ ❱ 38 │   │   │   papers = self._fetch_for_topic(topic, since, seen_ids)      │
+│   39 │   │   │   results.extend(papers)                                      │
+│   40 │   │   │   logger.info(f"  -> {len(papers)} new papers found for {topi │
+│   41                                                                         │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/src/rag_paper_recommend/collector/arxiv │
+│ _collector.py:59 in _fetch_for_topic                                         │
+│                                                                              │
+│   56 │   │   )                                                               │
+│   57 │   │                                                                   │
+│   58 │   │   papers: list[PaperRaw] = []                                     │
+│ ❱ 59 │   │   for result in self._client.results(search):                     │
+│   60 │   │   │   # published は timezone-aware だが念のため確認              │
+│   61 │   │   │   published = result.published                                │
+│   62 │   │   │   if published.tzinfo is None:                                │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:669 in _results                                                │
+│                                                                              │
+│   666 │   │   │   if offset >= total_results:                                │
+│   667 │   │   │   │   break                                                  │
+│   668 │   │   │   page_url = self._format_url(search, offset, self.page_size │
+│ ❱ 669 │   │   │   feed = self._parse_feed(page_url, first_page=False)        │
+│   670 │                                                                      │
+│   671 │   def _format_url(self, search: Search, start: int, page_size: int)  │
+│   672 │   │   """                                                            │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:703 in _parse_feed                                             │
+│                                                                              │
+│   700 │   │   ) as err:                                                      │
+│   701 │   │   │   if _try_index < self.num_retries:                          │
+│   702 │   │   │   │   logger.debug("Got error (try %d): %s", _try_index, err │
+│ ❱ 703 │   │   │   │   return self._parse_feed(url, first_page=first_page, _t │
+│   704 │   │   │   logger.debug("Giving up (try %d): %s", _try_index, err)    │
+│   705 │   │   │   raise err                                                  │
+│   706                                                                        │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:703 in _parse_feed                                             │
+│                                                                              │
+│   700 │   │   ) as err:                                                      │
+│   701 │   │   │   if _try_index < self.num_retries:                          │
+│   702 │   │   │   │   logger.debug("Got error (try %d): %s", _try_index, err │
+│ ❱ 703 │   │   │   │   return self._parse_feed(url, first_page=first_page, _t │
+│   704 │   │   │   logger.debug("Giving up (try %d): %s", _try_index, err)    │
+│   705 │   │   │   raise err                                                  │
+│   706                                                                        │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:703 in _parse_feed                                             │
+│                                                                              │
+│   700 │   │   ) as err:                                                      │
+│   701 │   │   │   if _try_index < self.num_retries:                          │
+│   702 │   │   │   │   logger.debug("Got error (try %d): %s", _try_index, err │
+│ ❱ 703 │   │   │   │   return self._parse_feed(url, first_page=first_page, _t │
+│   704 │   │   │   logger.debug("Giving up (try %d): %s", _try_index, err)    │
+│   705 │   │   │   raise err                                                  │
+│   706                                                                        │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:705 in _parse_feed                                             │
+│                                                                              │
+│   702 │   │   │   │   logger.debug("Got error (try %d): %s", _try_index, err │
+│   703 │   │   │   │   return self._parse_feed(url, first_page=first_page, _t │
+│   704 │   │   │   logger.debug("Giving up (try %d): %s", _try_index, err)    │
+│ ❱ 705 │   │   │   raise err                                                  │
+│   706 │                                                                      │
+│   707 │   def __try_parse_feed(                                              │
+│   708 │   │   self,                                                          │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:695 in _parse_feed                                             │
+│                                                                              │
+│   692 │   │   `self.num_retries` times.                                      │
+│   693 │   │   """                                                            │
+│   694 │   │   try:                                                           │
+│ ❱ 695 │   │   │   return self.__try_parse_feed(url, first_page=first_page, t │
+│   696 │   │   except (                                                       │
+│   697 │   │   │   HTTPError,                                                 │
+│   698 │   │   │   UnexpectedEmptyPageError,                                  │
+│                                                                              │
+│ /Users/matsuirei/rag-paper-recommend/.venv/lib/python3.13/site-packages/arxi │
+│ v/__init__.py:732 in __try_parse_feed                                        │
+│                                                                              │
+│   729 │   │   resp = self._session.get(url, headers={"user-agent": "arxiv.py │
+│   730 │   │   self._last_request_dt = datetime.now()                         │
+│   731 │   │   if resp.status_code != requests.codes.OK:                      │
+│ ❱ 732 │   │   │   raise HTTPError(url, try_index, resp.status_code)          │
+│   733 │   │                                                                  │
+│   734 │   │   feed = feedparser.parse(resp.content)                          │
+│   735 │   │   if len(feed.entries) == 0 and not first_page:                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+HTTPError: Page request resulted in HTTP 429 
+(https://export.arxiv.org/api/query?search_query=RAG&id_list=&sortBy=submittedDa
+te&sortOrder=descending&start=100&max_results=100)

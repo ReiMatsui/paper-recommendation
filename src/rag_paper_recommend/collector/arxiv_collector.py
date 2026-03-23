@@ -15,9 +15,13 @@ class ArxivCollector(BaseCollector):
     同一論文が複数トピックにマッチする場合、最初にマッチしたトピックで記録する。
     """
 
-    def __init__(self, settings: Settings) -> None:
+    def __init__(self, settings: Settings, delay_seconds: float = 3.0) -> None:
         self._max_results = settings.arxiv_max_results_per_topic
-        self._client = arxiv.Client()
+        self._client = arxiv.Client(
+            page_size=100,
+            delay_seconds=delay_seconds,
+            num_retries=5,
+        )
 
     def fetch(self, topics: list[str], days_back: int = 1) -> list[PaperRaw]:
         """arXiv API から複数トピックの論文を収集する。

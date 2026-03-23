@@ -36,7 +36,8 @@ class BootstrapPipeline:
         notifier: EmailNotifier,
     ) -> None:
         self._settings = settings
-        self._collector = ArxivCollector(settings)
+        # ブートストラップ時は大量リクエストになるためレート制限を緩める
+        self._collector = ArxivCollector(settings, delay_seconds=10.0)
         self._extractor = PaperExtractor(llm_client)
         self._synthesizer = BootstrapSynthesizer(llm_client)
         self._llm_provider = llm_client.provider_name

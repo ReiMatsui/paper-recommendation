@@ -26,3 +26,17 @@
 2026-03-22 19:04:29.130 | INFO     | rag_paper_recommend.pipeline.daily_pipeline:run:118 - Daily report written | path=output/reports/2026-03-22/daily_report.md
 2026-03-22 19:04:31.132 | INFO     | rag_paper_recommend.notifier.email_notifier:_send:69 - Email sent | to=matsuirei0000@gmail.com | subject=[論文レポート] 2026年03月22日 — 0件
 2026-03-22 19:04:31.132 | INFO     | rag_paper_recommend.pipeline.daily_pipeline:run:123 - === Daily pipeline finished | processed=0/0 ===
+2026-03-23 09:00:03.936 | DEBUG    | rag_paper_recommend.storage.sqlite_store:__init__:22 - SQLiteStore initialized | db=data/db/papers.db
+2026-03-23 09:00:04.115 | DEBUG    | rag_paper_recommend.storage.vector_store:__init__:27 - VectorStore initialized | path=data/vector/chroma count=128
+2026-03-23 09:00:04.116 | INFO     | rag_paper_recommend.pipeline.daily_pipeline:run:48 - === Daily pipeline started | 2026-03-23 00:00 UTC ===
+2026-03-23 09:00:04.116 | INFO     | rag_paper_recommend.collector.arxiv_collector:fetch:37 - Fetching arXiv papers | topic='RAG' since=2026-03-22
+2026-03-23 09:00:07.370 | INFO     | rag_paper_recommend.collector.arxiv_collector:fetch:40 -   -> 0 new papers found for 'RAG'
+2026-03-23 09:00:07.370 | INFO     | rag_paper_recommend.collector.arxiv_collector:fetch:37 - Fetching arXiv papers | topic='retrieval augmented generation' since=2026-03-22
+2026-03-23 09:00:14.083 | INFO     | rag_paper_recommend.collector.arxiv_collector:fetch:40 -   -> 0 new papers found for 'retrieval augmented generation'
+2026-03-23 09:00:14.083 | INFO     | rag_paper_recommend.collector.arxiv_collector:fetch:42 - Total collected: 0 papers across 2 topics
+2026-03-23 09:00:14.083 | INFO     | rag_paper_recommend.pipeline.daily_pipeline:run:58 - Collected=0 | New=0 | Skipped(dup)=0
+2026-03-23 09:00:14.089 | INFO     | rag_paper_recommend.pipeline.daily_pipeline:run:113 - Past papers for trend analysis: 15
+2026-03-23 09:00:24.130 | INFO     | rag_paper_recommend.processor.trend_analyzer:analyze:52 - Trend analysis complete | today=0 past=15 tokens_in=2152 tokens_out=81
+2026-03-23 09:00:24.140 | INFO     | rag_paper_recommend.pipeline.daily_pipeline:run:118 - Daily report written | path=output/reports/2026-03-23/daily_report.md
+2026-03-23 09:00:26.245 | INFO     | rag_paper_recommend.notifier.email_notifier:_send:78 - Email sent | to=matsuirei0000@gmail.com | subject=[論文レポート] 2026年03月23日 — 0件
+2026-03-23 09:00:26.245 | INFO     | rag_paper_recommend.pipeline.daily_pipeline:run:123 - === Daily pipeline finished | processed=0/0 ===
